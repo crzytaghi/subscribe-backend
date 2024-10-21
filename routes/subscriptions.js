@@ -6,13 +6,15 @@ import {
   getSubscriptions,
   updateSubscription,
 } from "../controllers/subscriptionController.js";
+import authorize from "../middleware/authorize.js";
 
-const router = Router();
+const subscriptionRouter = Router();
 
-router.get("/", getSubscriptions);
-router.post("/", createSubscription);
-router.patch("/:id", updateSubscription);
-router.get("/:id", getSubscription);
-router.delete("/:id", deleteSubscription);
+// authorize middleware gives us access to the logged in users id
+subscriptionRouter.get("/", authorize, getSubscriptions);
+subscriptionRouter.post("/", authorize, createSubscription);
+subscriptionRouter.patch("/:id", authorize, updateSubscription);
+subscriptionRouter.get("/:id", authorize, getSubscription);
+subscriptionRouter.delete("/:id", authorize, deleteSubscription);
 
-export default router;
+export default subscriptionRouter;
